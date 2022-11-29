@@ -53,7 +53,8 @@ namespace WebEscuelaMVC.Controllers
         //GET : /aula/id
 
         [HttpGet]
-        public ActionResult BuscarAulaPorId(int id)
+        [ActionName("Detalle")]
+        public ActionResult Detalle (int id)
         {
             Aula aula = context.Aulas.Find(id);
 
@@ -121,6 +122,42 @@ namespace WebEscuelaMVC.Controllers
                          select a).SingleOrDefault();
 
             return View("Detalle", aula);
+        }
+
+        // GET: /aula/Delete/id 
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+
+            Aula aula = context.Aulas.Find(id);
+
+            if (aula == null)
+            {
+                return HttpNotFound();
+
+            }
+
+            return View("Delete", aula);
+
+        }
+
+
+
+        [HttpPost]
+        [ActionName("Delete")]
+
+        //POST: /aula/Delete
+
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Aula aula = context.Aulas.Find(id);
+
+            if (aula != null)
+            {
+                context.Aulas.Remove(aula);
+                context.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
     }
 }
